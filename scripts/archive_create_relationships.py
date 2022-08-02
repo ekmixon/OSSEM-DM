@@ -18,22 +18,26 @@ for ds_file in attack_ds_files:
         for relationship in data_component['relationships']:
             print(f"    [*] Processing {relationship['name']}..")
             file_name = f"{(relationship['name']).replace(' ','_').lower()}.yml"
-            rdict = dict()
-            rdict['name'] = relationship['name']
-            rdict['contributors'] = yaml_file['contributors']
-            rdict['attack'] = dict()
+            rdict = {
+                'name': relationship['name'],
+                'contributors': yaml_file['contributors'],
+                'attack': {},
+            }
+
             rdict['attack']['data_source'] = yaml_file['name']
             rdict['attack']['data_component'] = data_component['name']
-            rdict['behavior'] = dict()
+            rdict['behavior'] = {}
             rdict['behavior']['source'] = relationship['source_data_element']
             rdict['behavior']['relationship'] = relationship['relationship']
             rdict['behavior']['target'] = relationship['target_data_element']
             rdict['security_events'] = []
             for event in relationship['telemetry']:
-                event_dict = dict()
-                event_dict['event_id'] = event['event_id']
-                event_dict['name'] = event['event_name']
-                event_dict['platform'] = yaml_file['platforms'][0]
+                event_dict = {
+                    'event_id': event['event_id'],
+                    'name': event['event_name'],
+                    'platform': yaml_file['platforms'][0],
+                }
+
                 if 'audit_category' in event.keys():
                     event_dict['audit_category'] = event['audit_category']
                 if 'audit_sub_category' in event.keys():
